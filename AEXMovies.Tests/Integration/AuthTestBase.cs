@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using AEXMovies.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,8 +18,12 @@ public class AuthTestBase : BaseTest
         {
             UserName = userName
         };
-        var userManager = Application.Services.GetRequiredService<UserManager<User>>();
-        await userManager.CreateAsync(user, password);
+        var scopeFactory = Application.Services.GetRequiredService<IServiceScopeFactory>();
+        using (var scope = scopeFactory.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            await userManager.CreateAsync(user, password);
+        }
         return user;
     }
 
@@ -27,20 +32,21 @@ public class AuthTestBase : BaseTest
         return CreateUser(DefaultUsername, DefaultPassword);
     }
 
-    public async Task AuthorizeAs(User user, string password)
+    public async Task<AuthorizationResult> AuthorizeAs(User user, string password)
     {
         var response = await Client.PostAsync("/api/v1/auth/login", JsonContent.Create(new { login = user.UserName, password }));
         response.EnsureSuccessStatusCode();
+        var data = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+        Assert.NotNull(data);
+        Assert.True(data.ContainsKey("token"));
+        Assert.True(data.ContainsKey("refreshToken"));
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data["token"]);
+        return new AuthorizationResult(user, password, data["token"], data["refreshToken"]);
     }
 
-    public async Task CreateAndAuthorizeDefaultUser()
+    public async Task<AuthorizationResult> CreateAndAuthorizeDefaultUser()
     {
         var user = await CreateDefaultUser();
-        await AuthorizeAs(user, DefaultPassword);
-    }
-
-
-    public AuthTestBase(TestingApplication testingApplication) : base(testingApplication)
-    {
+        return await AuthorizeAs(user, DefaultPassword);
     }
 }

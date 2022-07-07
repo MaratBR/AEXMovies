@@ -20,8 +20,8 @@ public class AuthController : Controller
     }
 
 
-    [Authorize]
     [HttpGet("whoami")]
+    [Authorize]
     public IActionResult WhoAmI()
     {
         return Ok(new
@@ -37,13 +37,33 @@ public class AuthController : Controller
         var user = await _authService.FindUserByCredentials(dto);
         if (user == null)
             return Unauthorized("Invalid user credentials");
-        var principal = await _authService.CreatePrincipal(user, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            principal);
+        var refreshToken = await _authService.CreateNewRefreshToken(user);
+        var token = await _authService.GenerateUserToken(user);
 
-        return Ok(new { Message = "Logged in successfully" });
+        return Ok(new
+        {
+            Token = token,
+            RefreshToken = refreshToken.Id
+        });
+    }
+    
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(RefreshTokenDto dto)
+    {
+        var oldRefreshToken = await _authService.FindRefreshToken(dto.RefreshToken);
+        if (oldRefreshToken == null)
+            return Unauthorized("Invalid refresh token");
+
+        var refreshToken = await _authService.RotateRefreshToken(oldRefreshToken);
+        var user = await _authService.FindUserByRefreshToken(refreshToken);
+        var token = await _authService.GenerateUserToken(user);
+
+        return Ok(new
+        {
+            Token = token,
+            RefreshToken = refreshToken.Id
+        });
     }
 
     [HttpPost("register")]
@@ -54,9 +74,13 @@ public class AuthController : Controller
             var user = await _authService.RegisterNewUser(dto);
             return Ok(new { Message = $"Welcome aboard, {user.UserName}!" });
         }
-        catch (UserAlreadyExists e)
+        catch (UserIdentityErrorsException e)
         {
-            return Conflict(e.Message);
+            // TODO: more concrete status code?
+            return BadRequest(new
+            {
+                e.Errors, e.Message
+            });
         }
     }
 }

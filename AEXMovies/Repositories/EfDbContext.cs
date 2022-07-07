@@ -15,6 +15,8 @@ public class EfDbContext : IdentityDbContext<User>
     public DbSet<MovieGenre> MovieGenres { get; set; }
     public DbSet<Actor> Actors { get; set; }
     public DbSet<MovieActor> MovieActors { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

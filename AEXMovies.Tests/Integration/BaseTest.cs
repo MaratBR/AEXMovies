@@ -1,19 +1,14 @@
 namespace AEXMovies.Tests.Integration;
 
-public class BaseTest : IDisposable, IClassFixture<TestingApplication>
+public class BaseTest
 {
     protected readonly TestingApplication Application;
     private HttpClient? _client;
 
     protected HttpClient Client => _client ??= Application.CreateClient();
     
-    public BaseTest(TestingApplication testingApplication)
+    public BaseTest()
     {
-        Application = testingApplication;
-    }
-
-    public void Dispose()
-    {
-        Application.Dispose();
+        Application = new TestingApplication();
     }
 }
