@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AEXMovies", "AEXMovies.csproj", "{AB0701A2-060E-492B-BE3B-46B5AC02DBAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AEXMovies", "AEXMovies/AEXMovies.csproj", "{AB0701A2-060E-492B-BE3B-46B5AC02DBAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2044,11 +2044,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/marat/RiderProjects/AEXMovies/AEXMovies.csproj",
+      "projectUniqueName": "/home/marat/RiderProjects/AEXMovies/AEXMovies/AEXMovies.csproj",
       "projectName": "AEXMovies",
-      "projectPath": "/home/marat/RiderProjects/AEXMovies/AEXMovies.csproj",
+      "projectPath": "/home/marat/RiderProjects/AEXMovies/AEXMovies/AEXMovies.csproj",
       "packagesPath": "/home/marat/.nuget/packages/",
-      "outputPath": "/home/marat/RiderProjects/AEXMovies/obj/",
+      "outputPath": "/home/marat/RiderProjects/AEXMovies/AEXMovies/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/marat/.nuget/NuGet/NuGet.Config"

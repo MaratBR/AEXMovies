@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P7xC8pMLl+OPxPHskP0Xx6U24X6KJOMaCFnDbUNW41LBYU/+oJS54Ntxqk0+mNNzlyf2JzwZwh+VAIEbPD/OqQ==",
+  "dgSpecHash": "z9wjNoRLw8JgJaO20GbDmPcdnE0Ocx3sACbSw7tJ/P24TLfvLgue5Yi/JKqTOff9kaR4QlD8D7D0jrANMqhcPw==",
   "success": true,
-  "projectFilePath": "/home/marat/RiderProjects/AEXMovies/AEXMovies.csproj",
+  "projectFilePath": "/home/marat/RiderProjects/AEXMovies/AEXMovies/AEXMovies.csproj",
   "expectedPackageFiles": [
     "/home/marat/.nuget/packages/automapper/11.0.1/automapper.11.0.1.nupkg.sha512",
     "/home/marat/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/11.0.0/automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
