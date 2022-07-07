@@ -7,7 +7,7 @@ namespace AEXMovies.Services.AssetsLoaderService;
 public class AssetsLoaderService : IAssetsLoaderService
 {
     private readonly AssetLoaderOptions _options;
-    
+
     public AssetsLoaderService(IOptions<AssetLoaderOptions> options)
     {
         _options = options.Value ?? new AssetLoaderOptions();

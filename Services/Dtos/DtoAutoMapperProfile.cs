@@ -1,8 +1,9 @@
 using AEXMovies.Models;
+using AutoMapper;
 
 namespace AEXMovies.Services.Dtos;
 
-public class DtoAutoMapperProfile : AutoMapper.Profile
+public class DtoAutoMapperProfile : Profile
 {
     public DtoAutoMapperProfile()
     {

@@ -1,6 +1,5 @@
 using AEXMovies.Models;
 using AEXMovies.Repositories.ActorRepository;
-using AEXMovies.Repositories.Exceptions;
 using AEXMovies.Services.Dtos;
 using AutoMapper;
 
@@ -10,13 +9,13 @@ public class ActorService : IActorService
 {
     private readonly IActorRepository _actorRepository;
     private readonly IMapper _mapper;
-    
+
     public ActorService(IActorRepository actorRepository, IMapper mapper)
     {
         _actorRepository = actorRepository;
         _mapper = mapper;
     }
-    
+
     public Task<ActorDetailsDto?> Get(int id)
     {
         return _actorRepository.GetById<ActorDetailsDto>(id);

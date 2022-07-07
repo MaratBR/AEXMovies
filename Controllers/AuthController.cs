@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using AEXMovies.Services.AuthService;
 using AEXMovies.Services.AuthService.Exceptions;
 using AEXMovies.Services.Dtos;
@@ -26,7 +25,7 @@ public class AuthController : Controller
         if (user == null)
             return Unauthorized("Invalid user credentials");
         var principal = await _authService.CreatePrincipal(user, CookieAuthenticationDefaults.AuthenticationScheme);
-        
+
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             principal);
@@ -45,7 +44,6 @@ public class AuthController : Controller
         catch (UserAlreadyExists e)
         {
             return Conflict(e.Message);
-        }        
+        }
     }
-
 }

@@ -1,5 +1,3 @@
-using AEXMovies.Models;
-
 namespace AEXMovies.Services.Dtos;
 
 public class MovieDetailsDto : MovieDto

@@ -1,12 +1,45 @@
 [
-  ["Kill Ball", "Action"],
-  ["Sun is a deadly laser", "Adventure"],
-  ["Avengers: whatever", "Adventure"],
-  ["43 and a half reasons why I don't like Java (okay maybe not that much)", "Fantasy"],
-  ["Vegetables: Where? When? and Why? and also Who for good measure", "Psychological"],
-  ["It actually does not matter what I write here", "Romance", "Comedy", "Drama"],
-  ["It's 20 minutes past midnight, I really should go to sleep", "Horror"],
-  ["Don't Bee Movie", "Horror"],
-  ["Just don't", "Horror", "Thriller"],
-  ["It's bad, don't watch it", "Science fiction"]
+  [
+    "Kill Ball",
+    "Action"
+  ],
+  [
+    "Sun is a deadly laser",
+    "Adventure"
+  ],
+  [
+    "Avengers: whatever",
+    "Adventure"
+  ],
+  [
+    "43 and a half reasons why I don't like Java (okay maybe not that much)",
+    "Fantasy"
+  ],
+  [
+    "Vegetables: Where? When? and Why? and also Who for good measure",
+    "Psychological"
+  ],
+  [
+    "It actually does not matter what I write here",
+    "Romance",
+    "Comedy",
+    "Drama"
+  ],
+  [
+    "It's 20 minutes past midnight, I really should go to sleep",
+    "Horror"
+  ],
+  [
+    "Don't Bee Movie",
+    "Horror"
+  ],
+  [
+    "Just don't",
+    "Horror",
+    "Thriller"
+  ],
+  [
+    "It's bad, don't watch it",
+    "Science fiction"
+  ]
 ]

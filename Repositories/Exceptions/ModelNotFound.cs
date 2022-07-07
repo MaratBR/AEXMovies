@@ -5,6 +5,5 @@ public class ModelNotFound : Exception
 {
     public ModelNotFound(string message) : base(message)
     {
-        
     }
 }

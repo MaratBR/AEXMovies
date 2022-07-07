@@ -4,5 +4,4 @@ namespace AEXMovies.Models;
 
 public class User : IdentityUser
 {
-    
 }

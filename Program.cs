@@ -22,10 +22,7 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddRouting();
 builder.Services.AddMvc()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+    .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 builder.Services.AddControllers();
 
 // authentication/authorization
@@ -40,10 +37,7 @@ builder.Services.AddAuthorization();
 
 // database connection
 var connectionString = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<EfDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
+builder.Services.AddDbContext<EfDbContext>(options => { options.UseSqlServer(connectionString); });
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<EfDbContext>()
@@ -70,7 +64,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 
-string command = args.Length == 0 ? "serve" : args[0];
+var command = args.Length == 0 ? "serve" : args[0];
 
 if (command == "populate")
 {

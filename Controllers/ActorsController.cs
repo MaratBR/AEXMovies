@@ -16,7 +16,7 @@ public class ActorsController : Controller
     {
         _actorService = actorService;
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -33,7 +33,7 @@ public class ActorsController : Controller
         var actor = await _actorService.Create(dto);
         return Ok(actor);
     }
-    
+
     [Authorize(Roles = "Admin,Moderator")]
     [HttpPatch("{id}")]
     public async Task<IActionResult> Update(int id, UpdateActorDto dto)

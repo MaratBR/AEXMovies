@@ -1,4 +1,3 @@
-using AEXMovies.Repositories;
 using AEXMovies.Repositories.ActorRepository;
 using AEXMovies.Repositories.GenreRepository;
 using AEXMovies.Services.ActorService;
@@ -20,17 +19,15 @@ public static class Populate
             var actorService = serviceScope.ServiceProvider.GetRequiredService<IActorService>();
 
             var genres = await assetsLoader.LoadJsonAsset<string[]>("DefaultGenres");
-    
+
             await genreService.EnsureAllExist(genres);
 
             var actors = await assetsLoader.LoadJsonAsset<string[]>("Actors");
             foreach (var actor in actors)
-            {
-                await actorService.Create(new CreateActorDto()
+                await actorService.Create(new CreateActorDto
                 {
                     Name = actor
                 });
-            }
 
 
             var movies = await assetsLoader.LoadJsonAsset<string[][]>("DemoMovies");
@@ -48,13 +45,14 @@ public static class Populate
                 if (await movieService.FindMovieByName(name) == null)
                 {
                     await genreService.EnsureAllExist(movieGenres);
-                    
-                    
-                    await movieService.CreateMovie(new CreateNewMovieDto()
+
+
+                    await movieService.CreateMovie(new CreateNewMovieDto
                     {
                         Name = name,
                         // note: we use ms sql and it's case insensitive, so it's fine to compare NormalizedName to whatever is in movieGenres
-                        GenreIds = (await genreRepository.FindMany(g => movieGenres.Contains(g.NormalizedName))).Select(g => g.Id).ToList(),
+                        GenreIds = (await genreRepository.FindMany(g => movieGenres.Contains(g.NormalizedName)))
+                            .Select(g => g.Id).ToList(),
                         ActorIds = allActors.Select(a => a.Id).ToList()
                     });
                 }

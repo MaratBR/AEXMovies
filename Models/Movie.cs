@@ -1,5 +1,3 @@
-using AEXMovies.Repositories;
-
 namespace AEXMovies.Models;
 
 public class Movie : RecordModel

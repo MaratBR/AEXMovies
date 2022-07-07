@@ -1,7 +1,6 @@
 using AEXMovies.Models;
 using AEXMovies.Repositories.Exceptions;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 
 namespace AEXMovies.Repositories;
 
@@ -34,7 +33,8 @@ public class EfRecordRepository<T> : EfRepository<T>, IRecordRepository<T> where
         var model = GetDeletedById(id);
         if (model == null)
             throw new RecordNotFoundException(typeof(T), id);
-        return model!;    }
+        return model!;
+    }
 
     public Task<TProjection?> GetById<TProjection>(int id)
     {

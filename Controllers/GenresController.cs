@@ -1,4 +1,3 @@
-using AEXMovies.Repositories.GenreRepository;
 using AEXMovies.Services.GenreService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,5 +20,4 @@ public class GenresController : Controller
         var genres = await _genreService.Search(q);
         return Ok(genres);
     }
-    
 }

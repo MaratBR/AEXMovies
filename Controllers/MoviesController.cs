@@ -1,9 +1,7 @@
-using AEXMovies.Models;
 using AEXMovies.Repositories.Exceptions;
 using AEXMovies.Services.Dtos;
 using AEXMovies.Services.MovieService;
 using AEXMovies.Services.MovieService.Exceptions;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,16 +12,17 @@ namespace AEXMovies.Controllers;
 public class MoviesController : Controller
 {
     private readonly IMovieService _movieService;
-    
+
     public MoviesController(IMovieService movieService)
     {
         _movieService = movieService;
     }
-    
+
     [HttpGet("search")]
-    public async Task<IActionResult> Search(string? q = null, bool byActors = true, bool byGenre = true, bool byName = true)
+    public async Task<IActionResult> Search(string? q = null, bool byActors = true, bool byGenre = true,
+        bool byName = true)
     {
-        var movies = await _movieService.SearchMovies(q, new SearchOptions()
+        var movies = await _movieService.SearchMovies(q, new SearchOptions
         {
             SearchActors = byActors,
             SearchGenres = byGenre,
@@ -31,7 +30,7 @@ public class MoviesController : Controller
         });
         return Ok(movies);
     }
-    
+
     [HttpGet("search/advanced")]
     public async Task<IActionResult> Search([FromQuery] AdvancedSearchOptions options)
     {
