@@ -11,9 +11,10 @@ public class ActorService : IActorService
     private readonly IActorRepository _actorRepository;
     private readonly IMapper _mapper;
     
-    public ActorService(IActorRepository actorRepository)
+    public ActorService(IActorRepository actorRepository, IMapper mapper)
     {
         _actorRepository = actorRepository;
+        _mapper = mapper;
     }
     
     public Task<ActorDetailsDto?> Get(int id)
@@ -50,5 +51,10 @@ public class ActorService : IActorService
             actor.Name = dto.Name;
         await _actorRepository.Save(actor);
         return _mapper.Map<ActorDto>(actor);
+    }
+
+    public Task<List<ActorDto>> Search(string? query)
+    {
+        return _actorRepository.FindMany<ActorDto>(query == null ? null : a => a.Name.Contains(query), take: 500);
     }
 }

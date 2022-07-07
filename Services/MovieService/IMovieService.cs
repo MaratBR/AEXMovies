@@ -17,6 +17,7 @@ public interface IMovieService
     Task<MovieDetailsDto?> FindMovieByName(string fullName);
     Task<MovieDto> UpdateMovie(int id, UpdateMovieDto dto);
     Task DeleteById(int id);
-    Task<List<MovieSearchDto>> SearchMovies(string query, SearchOptions options);
+    Task<List<MovieListItemDto>> SearchMovies(string? query, SearchOptions options);
+    Task<List<MovieListItemDto>> SearchMovies(AdvancedSearchOptions options);
     Task<MovieDto> CreateMovie(CreateNewMovieDto newMovieDto);
 }

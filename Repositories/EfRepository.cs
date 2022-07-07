@@ -91,7 +91,7 @@ public class EfRepository<TModel> : IRepository<TModel> where TModel : class
 
     public virtual async Task Delete(TModel record)
     {
-        _context.Remove(record);
+        _dbSet.Remove(record);
         await _context.SaveChangesAsync();
     }
 
@@ -99,14 +99,14 @@ public class EfRepository<TModel> : IRepository<TModel> where TModel : class
     {
         if (_context.Entry(record).State == EntityState.Detached)
         {
-            _context.Add(record);
+            _dbSet.Add(record);
         }
         await _context.SaveChangesAsync();
     }
 
     public virtual async Task Save(IEnumerable<TModel> records)
     {
-        _context.AddRange(records.Select(r => _context.Entry(r).State == EntityState.Detached));
+        _dbSet.AddRange(records.Where(r => _context.Entry(r).State == EntityState.Detached));
         await _context.SaveChangesAsync();
     }
 }

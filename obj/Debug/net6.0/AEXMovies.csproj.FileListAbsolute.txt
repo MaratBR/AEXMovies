@@ -63,3 +63,4 @@
 /home/marat/RiderProjects/AEXMovies/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Design.dll
 /home/marat/RiderProjects/AEXMovies/bin/Debug/net6.0/Assets/DefaultGenres.json
 /home/marat/RiderProjects/AEXMovies/bin/Debug/net6.0/Assets/DemoMovies.json
+/home/marat/RiderProjects/AEXMovies/bin/Debug/net6.0/Assets/Actors.json

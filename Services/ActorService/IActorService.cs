@@ -32,4 +32,6 @@ public interface IActorService
     Task RestoreById(int id);
 
     Task<ActorDto> Update(int id, UpdateActorDto dto);
+
+    Task<List<ActorDto>> Search(string? query);
 }

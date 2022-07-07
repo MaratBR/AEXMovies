@@ -2,7 +2,7 @@ using AEXMovies.Models;
 
 namespace AEXMovies.Services.Dtos;
 
-public class MovieSearchDto
+public class MovieListItemDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

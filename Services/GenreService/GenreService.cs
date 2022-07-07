@@ -35,7 +35,7 @@ public class GenreService : IGenreService
         var genreNames = new Dictionary<string, string>(
             names.Select(name => new KeyValuePair<string,string>(NormalizeName(name), name))
             );
-        var existing = await _genreRepository.FindMany(g => genreNames.Keys.Contains(g.NormalizedName));
+        var existing = await _genreRepository.FindMany(g => genreNames.Keys.ToList().Contains(g.NormalizedName));
         var newGenreNames = genreNames.Keys.Except(existing.Select(g => g.NormalizedName));
         var newGenres = newGenreNames.Select(normName => new Genre
         {
@@ -57,13 +57,7 @@ public class GenreService : IGenreService
             g => g.NormalizedName.Contains(query), 
             take: 50);
     }
-
-    public Task<List<GenreDto>> FindGenres(List<string> genreNames)
-    {
-        genreNames = genreNames.Select(NormalizeName).ToList();
-        return _genreRepository.FindMany<GenreDto>(g => genreNames.Contains(g.NormalizedName));
-    }
-
+    
     private static readonly Regex WhiteSpaceRegex = new(@"\s+");
 
     private static string NormalizeName(string name)

@@ -64,14 +64,23 @@ public class MovieService : IMovieService
         await _movieRepository.Delete(movie);
     }
 
-    public async Task<List<MovieSearchDto>> SearchMovies(string query, SearchOptions options)
+    public async Task<List<MovieListItemDto>> SearchMovies(string? query, SearchOptions options)
     {
-        query = query.ToUpper();
-        var movies = await _movieRepository.FindMany<MovieSearchDto>(
-            filter: m => m.Name.ToLower().Contains(query) || 
-                         m.Genres.Any(g => g.Genre.NormalizedName.Contains(query)) || 
-                         m.Actors.Any(a => a.Actor.Name.ToUpper().Contains(query)));
-        return movies;
+        if (query == null)
+            return await _movieRepository.FindMany<MovieListItemDto>(take: 50);
+        return await _movieRepository.FindMany<MovieListItemDto>(
+            take: 50,
+            filter: m => (options.SearchName && m.Name.Contains(query) ) || 
+                         (options.SearchGenres && m.Genres.Any(g => g.Genre.NormalizedName.Contains(query))) || 
+                         (options.SearchActors && m.Actors.Any(a => a.Actor.Name.Contains(query))));
+    }
+
+    public Task<List<MovieListItemDto>> SearchMovies(AdvancedSearchOptions options)
+    {
+        return _movieRepository.FindMany<MovieListItemDto>(
+            filter: m => (options.NameQuery == null || m.Name.Contains(options.NameQuery)) &&
+                         (options.ActorIds.Count == 0 || m.Actors.Any(a => options.ActorIds.Contains(a.ActorId))) &&
+                         (options.GenreIds.Count == 0 || m.Genres.Any(g => options.GenreIds.Contains(g.GenreId))));
     }
 
     private async Task<List<Genre>> FindGenresOrThrow(ICollection<int> ids)

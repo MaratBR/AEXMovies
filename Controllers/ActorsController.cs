@@ -48,4 +48,10 @@ public class ActorsController : Controller
             return NotFound(e.Message);
         }
     }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(string? q = null)
+    {
+        return Ok(await _actorService.Search(q));
+    }
 }

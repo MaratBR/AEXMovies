@@ -21,8 +21,7 @@ public class MoviesController : Controller
     }
     
     [HttpGet("search")]
-    public async Task<IActionResult> SearchMovies(string q, [FromServices] IMapper mapper, bool byActors = true, bool byGenre = true,
-        bool byName = true)
+    public async Task<IActionResult> Search(string? q = null, bool byActors = true, bool byGenre = true, bool byName = true)
     {
         var movies = await _movieService.SearchMovies(q, new SearchOptions()
         {
@@ -30,6 +29,13 @@ public class MoviesController : Controller
             SearchGenres = byGenre,
             SearchName = byName
         });
+        return Ok(movies);
+    }
+    
+    [HttpGet("search/advanced")]
+    public async Task<IActionResult> Search([FromQuery] AdvancedSearchOptions options)
+    {
+        var movies = await _movieService.SearchMovies(options);
         return Ok(movies);
     }
 

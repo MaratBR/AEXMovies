@@ -7,11 +7,19 @@ Migration can be done with the command:
 dotnet ef database update
 ```
 
-### Create distributed cache table
 
-AEXMovies uses `IDistributedCache` to store session info which in turn uses 
-a table in your SQL Server. To create this table run the command:
+### Installing with docker
+
 ```
-dotnet sql-cache create "Server=localhost;Database=AEXMovies.Development;User=sa;Password=Password$" dbo Cache 
+git clone https://github.com/MaratBR/AEXMovies
+cd AEXMovies
+docker build . -t aex/movies-test:latest
+docker run -p  aex/movies-test:latest
 ```
-Please note that the command above uses *local development* database. Read more in [the microsoft documentation](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-6.0#distributed-sql-server-cache).
+
+## Gotchas
+
+### Database case-sensitivity
+MS SQL (that we use for this project) is case-insensitive meaning that 
+"Hello World" = "HeLLo WORLd". If you use database that is not case-sensitive
+(like PostgreSQL) it will break search a little.
