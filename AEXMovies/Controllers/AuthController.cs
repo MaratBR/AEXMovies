@@ -3,6 +3,7 @@ using AEXMovies.Services.AuthService.Exceptions;
 using AEXMovies.Services.Dtos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AEXMovies.Controllers;
@@ -16,6 +17,18 @@ public class AuthController : Controller
     public AuthController(IAuthService authService)
     {
         _authService = authService;
+    }
+
+
+    [Authorize]
+    [HttpGet("whoami")]
+    public IActionResult WhoAmI()
+    {
+        return Ok(new
+        {
+            Claims = new Dictionary<string, string>(
+                HttpContext.User.Claims.Select(c => new KeyValuePair<string, string>(c.Type, c.Value)))
+        });
     }
 
     [HttpPost("login")]
