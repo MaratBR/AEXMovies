@@ -7,11 +7,17 @@ namespace AEXMovies.Configuration;
 public class JwtConfig
 {
     
-    public string Issuer { get; set; } = "https://api.movies.aex";
+    [Required]
+    public string Issuer { get; set; }
+    
+    [Required]
     public TimeSpan TokenLifetime { get; set; } = TimeSpan.FromHours(1);
+    [Required]
     public TimeSpan RefreshTokenLifetime { get; set; } = TimeSpan.FromDays(30);
-    public string Audience { get; set; } = "https://movies.aex";
-    [Required] public string SecretKey { get; set; } = "wjkertqeiuhgiahefioawhrpfwh4gjieozsgnpeoiiowermcweronsumuhqweeeeeeeeeeeeeeeeeeeeek.qhwmfuyguye";
+    [Required]
+    public string Audience { get; set; } 
+    [Required] 
+    public string SecretKey { get; set; }
 
     public SecurityKey GetSecurityKey()
     {

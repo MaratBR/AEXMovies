@@ -27,7 +27,8 @@ builder.Services.AddMvc()
 builder.Services.AddControllers();
 
 
-var jwtConfig = builder.Configuration.GetSection(nameof(JwtConfig)).Get<JwtConfig>() ?? new JwtConfig();
+// Initialize authentication and add JwtConfig in service collection
+var jwtConfig = builder.Configuration.GetRequiredSection(nameof(JwtConfig)).Get<JwtConfig>();
 builder.Services.AddSingleton(jwtConfig);
 builder.Services
     .AddAuthentication(options =>
@@ -62,25 +63,29 @@ builder.Services.AddAuthorization(options =>
 
 // database connection
 var connectionString = builder.Configuration.GetConnectionString("Default");
+if (connectionString == null) throw new ApplicationException("Database connection string is missing, set connection string in appsetings.json or set it via \"ConnectionStrings__Default\" environment variable");
 builder.Services.AddDbContext<EfDbContext>(options => { options.UseSqlServer(connectionString); });
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<EfDbContext>()
     .AddDefaultTokenProviders();
 
+// AutoMapper
 builder.Services.AddAutoMapper(typeof(DtoAutoMapperProfile));
 
+// Repositories
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
-
+// Services aka bussiness logic
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 
+// Misc. services
 builder.Services.AddTransient<IAssetsLoaderService, AssetsLoaderService>();
 
 var app = builder.Build();
