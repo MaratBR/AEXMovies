@@ -104,5 +104,5 @@ public class MovieServiceTest : DatabaseTest
         Assert.Single((await movieService.SearchMovies("dude", new SearchOptions())));
         Assert.Single((await movieService.SearchMovies("Action", new SearchOptions())));
     }
-    
+
 }
