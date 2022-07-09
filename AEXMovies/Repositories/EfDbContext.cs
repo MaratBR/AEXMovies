@@ -10,12 +10,12 @@ public class EfDbContext : IdentityDbContext<User>
     {
     }
 
-    public DbSet<Movie> Movies { get; set; }
-    public DbSet<Genre> Genres { get; set; }
-    public DbSet<MovieGenre> MovieGenres { get; set; }
-    public DbSet<Actor> Actors { get; set; }
-    public DbSet<MovieActor> MovieActors { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public virtual DbSet<Movie> Movies { get; set; } = null!;
+    public virtual DbSet<Genre> Genres { get; set; } = null!;
+    public virtual DbSet<MovieGenre> MovieGenres { get; set; } = null!;
+    public virtual DbSet<Actor> Actors { get; set; } = null!;
+    public virtual DbSet<MovieActor> MovieActors { get; set; } = null!;
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder builder)

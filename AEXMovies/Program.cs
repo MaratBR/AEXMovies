@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AEXMovies;
 using AEXMovies.Configuration;
@@ -13,6 +14,7 @@ using AEXMovies.Services.AuthService;
 using AEXMovies.Services.Dtos;
 using AEXMovies.Services.GenreService;
 using AEXMovies.Services.MovieService;
+using AEXMovies.Util;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,8 +30,7 @@ builder.Services.AddControllers();
 
 
 // Initialize authentication and add JwtConfig in service collection
-var jwtConfig = builder.Configuration.GetRequiredSection(nameof(JwtConfig)).Get<JwtConfig>();
-builder.Services.AddSingleton(jwtConfig);
+var jwtConfig = builder.Configuration.GetAndValidateRequiredSection<JwtConfig>();
 builder.Services
     .AddAuthentication(options =>
     {
