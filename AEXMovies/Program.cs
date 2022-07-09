@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AEXMovies;
 using AEXMovies.Configuration;
@@ -64,7 +63,9 @@ builder.Services.AddAuthorization(options =>
 
 // database connection
 var connectionString = builder.Configuration.GetConnectionString("Default");
-if (connectionString == null) throw new ApplicationException("Database connection string is missing, set connection string in appsetings.json or set it via \"ConnectionStrings__Default\" environment variable");
+if (connectionString == null)
+    throw new ApplicationException(
+        "Database connection string is missing, set connection string in appsetings.json or set it via \"ConnectionStrings__Default\" environment variable");
 builder.Services.AddDbContext<EfDbContext>(options => { options.UseSqlServer(connectionString); });
 
 builder.Services.AddIdentity<User, IdentityRole>()

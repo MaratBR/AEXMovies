@@ -1,8 +1,6 @@
 using AEXMovies.Services.AuthService;
 using AEXMovies.Services.AuthService.Exceptions;
 using AEXMovies.Services.Dtos;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,7 +45,7 @@ public class AuthController : Controller
             RefreshToken = refreshToken.Id
         });
     }
-    
+
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh(RefreshTokenDto dto)
     {

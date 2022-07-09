@@ -1,8 +1,6 @@
 using AEXMovies.Models;
 using AEXMovies.Repositories;
 using AEXMovies.Repositories.MovieRepository;
-using AEXMovies.Services.Dtos;
-using AEXMovies.Services.MovieService;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AEXMovies.Tests.Unit;

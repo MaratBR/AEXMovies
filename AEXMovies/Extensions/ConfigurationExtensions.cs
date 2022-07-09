@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Options;
 
 namespace AEXMovies.Util;
 
@@ -10,13 +9,12 @@ public static class ConfigurationExtensions
         var type = typeof(T);
         var value = configuration.GetRequiredSection(type.Name).Get<T>();
         if (value == null)
-        {
             throw new ValidationException($"Configuration section {type.Name} could not be converted to type {type}");
-        };
+        ;
 
         try
         {
-            Validator.ValidateObject(value, new ValidationContext(value), validateAllProperties: true);
+            Validator.ValidateObject(value, new ValidationContext(value), true);
         }
         catch (ValidationException e)
         {

@@ -13,8 +13,6 @@ namespace AEXMovies.Tests.Unit;
 
 public class MovieServiceTest : DatabaseTest
 {
-    private IMovieService MovieService() => BuildOrGetServiceProvider().GetRequiredService<IMovieService>();
-
     public MovieServiceTest()
     {
         RegisterServices(collection =>
@@ -26,6 +24,11 @@ public class MovieServiceTest : DatabaseTest
         });
     }
 
+    private IMovieService MovieService()
+    {
+        return BuildOrGetServiceProvider().GetRequiredService<IMovieService>();
+    }
+
     [Fact]
     public async Task CanCreateMovie()
     {
@@ -35,25 +38,25 @@ public class MovieServiceTest : DatabaseTest
         });
         Assert.Equal(1, await BuildOrGetServiceProvider().GetRequiredService<EfDbContext>().Movies.CountAsync());
     }
-    
+
     [Fact]
     public async Task CanCreateMovieWithActorsAndGenres()
     {
         var ctx = BuildOrGetServiceProvider().GetRequiredService<EfDbContext>();
-        
+
         ctx.AddRange(
             new Genre
             {
                 NormalizedName = "TEST",
                 DisplayName = "Test"
             },
-            new Actor()
+            new Actor
             {
                 Name = "Robert De Niro"
             }
-            );
+        );
         await ctx.SaveChangesAsync();
-        
+
         await MovieService().CreateMovie(new CreateNewMovieDto
         {
             Name = "My movie",
@@ -62,7 +65,7 @@ public class MovieServiceTest : DatabaseTest
         });
         Assert.Equal(1, await ctx.Movies.CountAsync());
     }
-    
+
     [Theory]
     [InlineData("genre")]
     [InlineData("actor")]
@@ -76,33 +79,32 @@ public class MovieServiceTest : DatabaseTest
             await MovieService().CreateMovie(new CreateNewMovieDto
             {
                 Name = "My movie",
-                GenreIds = mode == "both" || mode == "genre" ? new List<int> { 1 } : new(),
-                ActorIds = mode == "both" || mode == "actor" ? new List<int> { 1 } : new(),
+                GenreIds = mode == "both" || mode == "genre" ? new List<int> { 1 } : new List<int>(),
+                ActorIds = mode == "both" || mode == "actor" ? new List<int> { 1 } : new List<int>()
             });
         });
         Assert.Equal(0, await ctx.Movies.CountAsync());
     }
 
     [Theory]
-    [InlineData("Avengers: Infinity War", new [] { "Some random dude", "Homeless person we found on the street" })]
+    [InlineData("Avengers: Infinity War", new[] { "Some random dude", "Homeless person we found on the street" })]
     public async Task TestSimpleSearch(string movieName, string[] actors)
     {
         var ctx = BuildOrGetServiceProvider().GetRequiredService<EfDbContext>();
-        var actorInst = actors.Select(name => new Actor() { Name = name }).ToList();
+        var actorInst = actors.Select(name => new Actor { Name = name }).ToList();
         ctx.Actors.AddRange(actorInst);
-        ctx.Genres.Add(new Genre() { NormalizedName = "ACTION", DisplayName = "Action" });
-        var movie = new Movie() { Name = movieName };
+        ctx.Genres.Add(new Genre { NormalizedName = "ACTION", DisplayName = "Action" });
+        var movie = new Movie { Name = movieName };
         ctx.Movies.Add(movie);
         await ctx.SaveChangesAsync();
         movie.Actors = actorInst.Select(a => new MovieActor { ActorId = a.Id, MovieId = movie.Id }).ToList();
-        movie.Genres = new List<MovieGenre> { new MovieGenre { MovieId = movie.Id, GenreId = 1 } };
+        movie.Genres = new List<MovieGenre> { new() { MovieId = movie.Id, GenreId = 1 } };
         await ctx.SaveChangesAsync();
 
         var movieService = BuildOrGetServiceProvider().GetRequiredService<IMovieService>();
-        Assert.Single((await movieService.SearchMovies("Avengers", new SearchOptions())));
-        Assert.Single((await movieService.SearchMovies("Homeless", new SearchOptions())));
-        Assert.Single((await movieService.SearchMovies("dude", new SearchOptions())));
-        Assert.Single((await movieService.SearchMovies("Action", new SearchOptions())));
+        Assert.Single(await movieService.SearchMovies("Avengers", new SearchOptions()));
+        Assert.Single(await movieService.SearchMovies("Homeless", new SearchOptions()));
+        Assert.Single(await movieService.SearchMovies("dude", new SearchOptions()));
+        Assert.Single(await movieService.SearchMovies("Action", new SearchOptions()));
     }
-
 }

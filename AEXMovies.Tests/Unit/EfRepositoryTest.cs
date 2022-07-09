@@ -1,4 +1,3 @@
-
 using AEXMovies.Models;
 using AEXMovies.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,10 +8,7 @@ public class EfRepositoryTest : DatabaseTest
 {
     public EfRepositoryTest()
     {
-        RegisterServices(collection =>
-        {
-            collection.AddScoped<EfRecordRepository<Movie>>();
-        });
+        RegisterServices(collection => { collection.AddScoped<EfRecordRepository<Movie>>(); });
     }
 
     [Fact]
@@ -24,7 +20,7 @@ public class EfRepositoryTest : DatabaseTest
         var movie = await repo.GetById(1);
         Assert.NotNull(movie);
     }
-    
+
     [Fact]
     public async Task FindMany()
     {
@@ -35,7 +31,7 @@ public class EfRepositoryTest : DatabaseTest
         var movies = await repo.FindMany();
         Assert.Single(movies);
     }
-    
+
     [Fact]
     public async Task FindOne()
     {

@@ -6,15 +6,12 @@ namespace AEXMovies.Tests.Unit;
 public class BaseTest
 {
     private readonly ServiceCollection _serviceCollection = new();
-    private ServiceProvider? _serviceProvider = null;
     private readonly List<Action<ServiceProvider>> _serviceProviderHooks = new();
+    private ServiceProvider? _serviceProvider;
 
     public BaseTest()
     {
-        RegisterServices(collection =>
-        {
-            collection.AddAutoMapper(typeof(DtoAutoMapperProfile));
-        });
+        RegisterServices(collection => { collection.AddAutoMapper(typeof(DtoAutoMapperProfile)); });
     }
 
     protected void RegisterServices(Action<ServiceCollection> servicesBuilder)
@@ -29,11 +26,9 @@ public class BaseTest
         if (_serviceProvider == null)
         {
             _serviceProvider = _serviceCollection.BuildServiceProvider();
-            foreach (var hook in _serviceProviderHooks)
-            {
-                hook(_serviceProvider);
-            }
+            foreach (var hook in _serviceProviderHooks) hook(_serviceProvider);
         }
+
         return _serviceProvider;
     }
 

@@ -7,7 +7,6 @@ using AEXMovies.Repositories.RefreshTokenRepository;
 using AEXMovies.Services.AuthService.Exceptions;
 using AEXMovies.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
@@ -15,11 +14,12 @@ namespace AEXMovies.Services.AuthService;
 
 public class AuthService : IAuthService
 {
-    private readonly UserManager<User> _userManager;
     private readonly JwtConfig _jwtConfig;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly UserManager<User> _userManager;
 
-    public AuthService(UserManager<User> userManager, JwtConfig jwtConfig, IRefreshTokenRepository refreshTokenRepository)
+    public AuthService(UserManager<User> userManager, JwtConfig jwtConfig,
+        IRefreshTokenRepository refreshTokenRepository)
     {
         _userManager = userManager;
         _refreshTokenRepository = refreshTokenRepository;
@@ -76,21 +76,10 @@ public class AuthService : IAuthService
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
     }
-    
+
     public Task<RefreshToken> CreateNewRefreshToken(User user)
     {
         return CreateNewRefreshToken(user.Id);
-    }
-
-    public async Task<RefreshToken> CreateNewRefreshToken(string userId)
-    {
-        var token = new RefreshToken
-        {
-            CreatedById = userId,
-            Id = GenerateRefreshTokenId()
-        };
-        await _refreshTokenRepository.Insert(token);
-        return token;
     }
 
     public async Task<RefreshToken> RotateRefreshToken(RefreshToken refreshToken)
@@ -104,9 +93,23 @@ public class AuthService : IAuthService
         return _userManager.FindByIdAsync(token.CreatedById);
     }
 
-    public Task<RefreshToken?> FindRefreshToken(string token)
+    public async Task<RefreshToken?> FindRefreshToken(string token)
     {
-        return _refreshTokenRepository.Get(token);
+        var refreshToken = await _refreshTokenRepository.Get(token);
+        if (refreshToken != null && refreshToken.CreatedAt + _jwtConfig.RefreshTokenLifetime < DateTime.Now)
+            return null;
+        return refreshToken;
+    }
+
+    public async Task<RefreshToken> CreateNewRefreshToken(string userId)
+    {
+        var token = new RefreshToken
+        {
+            CreatedById = userId,
+            Id = GenerateRefreshTokenId()
+        };
+        await _refreshTokenRepository.Insert(token);
+        return token;
     }
 
     private string GenerateRefreshTokenId()

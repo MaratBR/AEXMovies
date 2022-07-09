@@ -6,7 +6,7 @@ namespace AEXMovies.Repositories.RefreshTokenRepository;
 public class RefreshTokenRepository : IRefreshTokenRepository
 {
     private readonly EfDbContext _context;
-    
+
     public RefreshTokenRepository(EfDbContext context)
     {
         _context = context;
@@ -16,7 +16,8 @@ public class RefreshTokenRepository : IRefreshTokenRepository
     public async Task Insert(RefreshToken token)
     {
         if (_context.Entry(token).State != EntityState.Detached)
-            throw new InvalidOperationException("Cannot insert refresh token that is already being tracked by the context");
+            throw new InvalidOperationException(
+                "Cannot insert refresh token that is already being tracked by the context");
         _context.RefreshTokens.Add(token);
         await _context.SaveChangesAsync();
     }
