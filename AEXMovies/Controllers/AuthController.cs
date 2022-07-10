@@ -60,7 +60,7 @@ public class AuthController : Controller
         return Ok(new
         {
             Token = token,
-            RefreshToken = refreshToken.Id
+            RefreshToken = refreshToken
         });
     }
 

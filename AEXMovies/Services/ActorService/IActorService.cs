@@ -5,6 +5,11 @@ namespace AEXMovies.Services.ActorService;
 
 public interface IActorService
 {
+    /// <summary>
+    /// Get detailed information about the actor.
+    /// </summary>
+    /// <param name="id">Actor ID</param>
+    /// <returns>Task representing asynchronous operation.</returns>
     Task<ActorDetailsDto?> Get(int id);
 
     /// <summary>
@@ -30,6 +35,12 @@ public interface IActorService
     /// <exception cref="RecordNotFoundException">if the actor does not exist or not deleted</exception>
     Task RestoreById(int id);
 
+    /// <summary>
+    /// Updates actor.
+    /// </summary>
+    /// <param name="id">Actor ID</param>
+    /// <param name="dto">Update data</param>
+    /// <returns></returns>
     Task<ActorDto> Update(int id, UpdateActorDto dto);
 
     Task<List<ActorDto>> Search(string? query);
